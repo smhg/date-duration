@@ -1,0 +1,40 @@
+{
+  "name": "date-duration",
+  "version": "0.1.0",
+  "description": "Duration",
+  "main": "dist/duration.js",
+  "scripts": {
+    "lint": "eslint src test",
+    "test": "babel-node -r node_modules/.bin/_mocha test",
+    "preversion": "npm run lint && npm test",
+    "postversion": "git push && git push --tags",
+    "build": "npm run lint && npm test && babel src --source-maps -d dist",
+    "prepublish": "npm run build",
+    "postpublish": "rm -rf dist"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/smhg/date-duration.git"
+  },
+  "keywords": [
+    "time",
+    "duration",
+    "iso",
+    "iso8601",
+    "iso",
+    "8601",
+    "date"
+  ],
+  "author": "Sam Hauglustaine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/smhg/date-duration/issues"
+  },
+  "homepage": "https://github.com/smhg/date-duration#readme",
+  "devDependencies": {
+    "babel": "^5.8.20",
+    "babel-eslint": "^4.0.5",
+    "eslint": "^1.0.0",
+    "mocha": "^2.2.5"
+  }
+}

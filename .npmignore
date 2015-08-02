@@ -1,0 +1,6 @@
+node_modules
+*.sublime-*
+npm-debug.log
+.eslintrc
+test
+.gitignore
