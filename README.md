@@ -1,4 +1,4 @@
-date-duration
+date-duration [![Build status](https://api.travis-ci.org/smhg/date-duration.png)](https://travis-ci.org/smhg/date-duration)
 ======
 Manipulate Date objects with [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations)-formatted durations.
 
