@@ -5,3 +5,4 @@ npm-debug.log
 test
 .gitignore
 .travis.yml
+src
