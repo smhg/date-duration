@@ -11,11 +11,12 @@ let toInt = (value) => {
     return new Date(+value);
   };
 
-let parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
+let parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
 
 let dateMethods = new Map([
     ['year', 'UTCFullYear'],
     ['month', 'UTCMonth'],
+    ['week', 'UTCDate'],
     ['day', 'UTCDate'],
     ['hour', 'UTCHours'],
     ['minute', 'UTCMinutes'],
@@ -24,13 +25,17 @@ let dateMethods = new Map([
 
 export default function createDuration (iso) {
   let [, ...parts] = iso.match(parser),
-    [year, month, day, hour, minute, second] = parts.map(toInt);
+    [year, month, week, day, hour, minute, second] = parts.map(toInt);
 
-  parts = {year, month, day, hour, minute, second};
+  if (week) {
+    week = week * 7;
+  }
+
+  parts = {year, month, week, day, hour, minute, second};
 
   return Object.freeze({
     toString: () => {
-      return `P${(year ? year + 'Y' : '')}${(month ? month + 'M' : '')}${(day ? day + 'D' : '')}${
+      return `P${(year ? year + 'Y' : '')}${(month ? month + 'M' : '')}${(week ? week / 7 + 'W' : '')}${(day ? day + 'D' : '')}${
         (hour || minute || second
           ? `T${(hour ? hour + 'H' : '')}${(minute ? minute + 'M' : '')}${(second ? second + 'S' : '')}`
           : ''
@@ -39,9 +44,9 @@ export default function createDuration (iso) {
     addTo: (date) => {
       let d = clone(date);
 
-      for (let [key, methodName] of dateMethods) {
+      for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d['set' + methodName](d['get' + methodName]() + parts[key]);
+          d['set' + method](d['get' + method]() + parts[key]);
         }
       }
 
@@ -50,9 +55,9 @@ export default function createDuration (iso) {
     subtractFrom: (date) => {
       let d = clone(date);
 
-      for (let [key, methodName] of dateMethods) {
+      for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d['set' + methodName](d['get' + methodName]() - parts[key]);
+          d['set' + method](d['get' + method]() - parts[key]);
         }
       }
 
