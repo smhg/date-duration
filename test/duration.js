@@ -22,7 +22,7 @@ describe('createDuration', () => {
 
   describe('#addTo', () => {
     it('should add the duration to a date', () => {
-      let date = new Date('2015-10-15T01:00:00.000Z');
+      const date = new Date('2015-10-15T01:00:00.000Z');
 
       assert.equal(createDuration('PT1H').addTo(date).toISOString(), '2015-10-15T02:00:00.000Z');
 
@@ -30,7 +30,7 @@ describe('createDuration', () => {
     });
 
     it('should add the duration to a date-like object', () => {
-      let date = {
+      const date = {
         toDate: () => {
           return new Date('2015-10-25T01:00:00.000Z');
         }
@@ -42,7 +42,7 @@ describe('createDuration', () => {
 
   describe('#subtractFrom', () => {
     it('should subtract the duration from a date', () => {
-      let date = new Date('2015-10-25T03:00:00.000Z');
+      const date = new Date('2015-10-25T03:00:00.000Z');
 
       assert.equal(createDuration('PT1H').subtractFrom(date).toISOString(), '2015-10-25T02:00:00.000Z');
 
@@ -50,7 +50,7 @@ describe('createDuration', () => {
     });
 
     it('should subtract the duration from a date-like object', () => {
-      let date = {
+      const date = {
         toDate: () => {
           return new Date('2015-10-25T03:00:00.000Z');
         }

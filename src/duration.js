@@ -1,6 +1,6 @@
 'use strict';
 
-let toInt = (value) => {
+const toInt = (value) => {
     return parseInt(value || '0', 10);
   },
   clone = (value) => {
@@ -11,9 +11,9 @@ let toInt = (value) => {
     return new Date(+value);
   };
 
-let parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
+const parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
 
-let dateMethods = new Map([
+const dateMethods = new Map([
     ['year', 'UTCFullYear'],
     ['month', 'UTCMonth'],
     ['week', 'UTCDate'],
