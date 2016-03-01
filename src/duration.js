@@ -1,19 +1,15 @@
 'use strict';
 
-const toInt = (value) => {
-    return parseInt(value || '0', 10);
-  },
-  clone = (value) => {
+const toInt = value => parseInt(value || '0', 10),
+  clone = value => {
     if (typeof value === 'object' && typeof value.toDate === 'function') {
       return value.toDate();
     }
 
     return new Date(+value);
-  };
-
-const parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
-
-const dateMethods = new Map([
+  },
+  parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/,
+  dateMethods = new Map([
     ['year', 'UTCFullYear'],
     ['month', 'UTCMonth'],
     ['week', 'UTCDate'],
@@ -34,14 +30,14 @@ export default function createDuration (iso) {
   parts = {year, month, week, day, hour, minute, second};
 
   return Object.freeze({
-    toString: () => {
-      return `P${(year ? year + 'Y' : '')}${(month ? month + 'M' : '')}${(week ? week / 7 + 'W' : '')}${(day ? day + 'D' : '')}${
+    toString: () =>
+      `P${(year ? year + 'Y' : '')}${(month ? month + 'M' : '')}${(week ? week / 7 + 'W' : '')}${(day ? day + 'D' : '')}${
         (hour || minute || second
           ? `T${(hour ? hour + 'H' : '')}${(minute ? minute + 'M' : '')}${(second ? second + 'S' : '')}`
           : ''
-        )}`;
-    },
-    addTo: (date) => {
+        )}`
+    ,
+    addTo: date => {
       let d = clone(date);
 
       for (let [key, method] of dateMethods) {
@@ -52,7 +48,7 @@ export default function createDuration (iso) {
 
       return d;
     },
-    subtractFrom: (date) => {
+    subtractFrom: date => {
       let d = clone(date);
 
       for (let [key, method] of dateMethods) {
