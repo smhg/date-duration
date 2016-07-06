@@ -6,7 +6,8 @@
   "scripts": {
     "lint": "eslint src test",
     "build": "babel --source-maps -d dist/ src/",
-    "test": "npm run lint && npm run build && mocha --compilers js:babel-register test",
+    "mocha": "TZ=Europe/Brussels mocha --compilers js:babel-register test && TZ=America/New_York mocha --compilers js:babel-register test",
+    "test": "npm run lint && npm run build && npm run mocha",
     "clean": "rm -rf dist",
     "preversion": "npm run test",
     "postversion": "git push && git push --tags",
