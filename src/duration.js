@@ -1,27 +1,27 @@
 'use strict';
 
-const toInt = value => parseInt(value || '0', 10),
-  clone = value => {
-    if (typeof value === 'object' && typeof value.toDate === 'function') {
-      return value.toDate();
-    }
+const toInt = value => parseInt(value || '0', 10);
+const clone = value => {
+  if (typeof value === 'object' && typeof value.toDate === 'function') {
+    return value.toDate();
+  }
 
-    return new Date(+value);
-  },
-  parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/,
-  dateMethods = new Map([
-    ['year', 'FullYear'],
-    ['month', 'Month'],
-    ['week', 'Date'],
-    ['day', 'Date'],
-    ['hour', 'UTCHours'],
-    ['minute', 'UTCMinutes'],
-    ['second', 'UTCSeconds']
-  ]);
+  return new Date(+value);
+};
+const parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
+const dateMethods = new Map([
+  ['year', 'FullYear'],
+  ['month', 'Month'],
+  ['week', 'Date'],
+  ['day', 'Date'],
+  ['hour', 'UTCHours'],
+  ['minute', 'UTCMinutes'],
+  ['second', 'UTCSeconds']
+]);
 
 export default function createDuration (iso) {
-  let [, ...parts] = iso.match(parser),
-    [year, month, week, day, hour, minute, second] = parts.map(toInt);
+  let [, ...parts] = iso.match(parser);
+  let [year, month, week, day, hour, minute, second] = parts.map(toInt);
 
   if (week) {
     week = week * 7;
@@ -35,8 +35,7 @@ export default function createDuration (iso) {
         (hour || minute || second
           ? `T${(hour ? hour + 'H' : '')}${(minute ? minute + 'M' : '')}${(second ? second + 'S' : '')}`
           : ''
-        )}`
-    ,
+        )}`,
     addTo: date => {
       let d = clone(date);
 
