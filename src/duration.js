@@ -31,9 +31,9 @@ export default function createDuration (iso) {
 
   return Object.freeze({
     toString: () =>
-      `P${(year ? year + 'Y' : '')}${(month ? month + 'M' : '')}${(week ? week / 7 + 'W' : '')}${(day ? day + 'D' : '')}${
+      `P${(year ? `${year}Y` : '')}${(month ? `${month}M` : '')}${(week ? `${week / 7}W` : '')}${(day ? `${day}D` : '')}${
         (hour || minute || second
-          ? `T${(hour ? hour + 'H' : '')}${(minute ? minute + 'M' : '')}${(second ? second + 'S' : '')}`
+          ? `T${(hour ? `${hour}H` : '')}${(minute ? `${minute}M` : '')}${(second ? `${second}S` : '')}`
           : ''
         )}`,
     addTo: date => {
@@ -41,7 +41,7 @@ export default function createDuration (iso) {
 
       for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d['set' + method](d['get' + method]() + parts[key]);
+          d[`set${method}`](d[`get${method}`]() + parts[key]);
         }
       }
 
@@ -52,7 +52,7 @@ export default function createDuration (iso) {
 
       for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d['set' + method](d['get' + method]() - parts[key]);
+          d[`set${method}`](d[`get${method}`]() - parts[key]);
         }
       }
 
