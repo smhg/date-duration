@@ -2,3 +2,4 @@ node_modules
 *.sublime-*
 npm-debug.log
 dist
+package-lock.json
