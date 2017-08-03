@@ -1,6 +1,6 @@
 'use strict';
 
-import createDuration from '../dist/duration';
+import createDuration from '../src/duration';
 import assert from 'assert';
 
 describe('createDuration', () => {
