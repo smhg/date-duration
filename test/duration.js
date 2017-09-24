@@ -26,7 +26,6 @@ describe('createDuration', () => {
   describe('#toString', () => {
     it('should return the passed ISO string', () => {
       assert.equal(createDuration('P1DT1M').toString(), 'P1DT1M');
-
       assert.equal(createDuration('P1W').toString(), 'P1W');
     });
   });
@@ -57,12 +56,17 @@ describe('createDuration', () => {
     });
 
     it('should work across timezones', () => {
+      // jumps across timezones are handled differently for date and time elements
+      // see https://en.wikipedia.org/wiki/ISO_8601#Durations
+
+      // jump across timezone with time element
       assert.deepEqual(
         createDuration('PT744H') // ~ 31 days
           .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
         new Date('Mon Nov 15 2016 11:00:00 GMT+0100 (CET)').toString()
       );
 
+      // jump across timezone with date element
       assert.deepEqual(
         createDuration('P31D')
           .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
@@ -107,12 +111,17 @@ describe('createDuration', () => {
     });
 
     it('should work across timezones', () => {
+      // jumps across timezones are handled differently for date and time elements
+      // see https://en.wikipedia.org/wiki/ISO_8601#Durations
+
+      // jump across timezone with time element
       assert.deepEqual(
         createDuration('PT744H') // ~ 31 days
           .subtractFrom(new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)')).toString(),
         new Date('Sun Oct 15 2016 13:00:00 GMT+0200 (CEST)').toString()
       );
 
+      // jump across timezone with date element
       assert.deepEqual(
         createDuration('P31D')
           .subtractFrom(new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)')).toString(),
