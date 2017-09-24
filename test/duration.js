@@ -6,16 +6,16 @@ import assert from 'assert';
 describe('createDuration', () => {
   describe('#()', () => {
     it('should accept an ISO string', () => {
-      assert(typeof createDuration(), 'object');
-      assert(typeof createDuration(''), 'object');
-      assert(typeof createDuration(undefined), 'object');
-      assert(typeof createDuration(null), 'object');
       assert(typeof createDuration('P0D'), 'object');
       assert(typeof createDuration('PT0S'), 'object');
       assert(typeof createDuration('P1DT2H'), 'object');
     });
 
     it('should detect invalid input', () => {
+      assert.throws(() => { createDuration(); });
+      assert.throws(() => { createDuration(''); });
+      assert.throws(() => { createDuration(undefined); });
+      assert.throws(() => { createDuration(null); });
       assert.throws(() => { createDuration('abc'); });
       assert.throws(() => { createDuration('P'); });
       assert.throws(() => { createDuration('P0'); });

@@ -1,6 +1,14 @@
 'use strict';
 
-const toInt = value => parseInt(value || '0', 10);
+const toInt = value => {
+  const int = parseInt(value, 10);
+
+  if (int + '' === value) {
+    return int;
+  }
+
+  return value;
+};
 const clone = value => {
   if (typeof value === 'object' && typeof value.toDate === 'function') {
     return value.toDate();
@@ -20,13 +28,11 @@ const dateMethods = new Map([
 ]);
 
 export default function createDuration (iso) {
-  iso = iso || '';
-
-  if (iso && iso.length > 0 && iso[0] !== 'P') {
+  if (!iso || typeof iso !== 'string' || iso[0] !== 'P') {
     throw new Error(`Invalid duration: ${iso} (invalid format)`);
   }
 
-  let [, ...parts] = iso.match(parser) || [0, 0, 0, 0, 0, 0, 0, 0];
+  let [, ...parts] = iso.match(parser);
 
   if (parts.every(part => typeof part === 'undefined')) {
     throw new Error(`Invalid duration: ${iso} (no date or time elements specified)`);
