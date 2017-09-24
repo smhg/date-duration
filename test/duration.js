@@ -15,23 +15,12 @@ describe('createDuration', () => {
       assert(typeof createDuration('P1DT2H'), 'object');
     });
 
-    // it('should detect invalid input', () => {
-    //   assert.throws(() => {
-    //     createDuration('abc');
-    //   });
-
-    //   assert.throws(() => {
-    //     createDuration('P');
-    //   });
-
-    //   assert.throws(() => {
-    //     createDuration('P0');
-    //   });
-
-    //   assert.throws(() => {
-    //     createDuration('P00');
-    //   });
-    // });
+    it('should detect invalid input', () => {
+      assert.throws(() => { createDuration('abc'); });
+      assert.throws(() => { createDuration('P'); });
+      assert.throws(() => { createDuration('P0'); });
+      assert.throws(() => { createDuration('P00'); });
+    });
   });
 
   describe('#toString', () => {

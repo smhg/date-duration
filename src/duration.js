@@ -23,10 +23,14 @@ export default function createDuration (iso) {
   iso = iso || '';
 
   if (iso && iso.length > 0 && iso[0] !== 'P') {
-    throw new Error(`Invalid duration: ${iso}`);
+    throw new Error(`Invalid duration: ${iso} (invalid format)`);
   }
 
   let [, ...parts] = iso.match(parser) || [0, 0, 0, 0, 0, 0, 0, 0];
+
+  if (parts.every(part => typeof part === 'undefined')) {
+    throw new Error(`Invalid duration: ${iso} (no date or time elements specified)`);
+  }
 
   let [year, month, week, day, hour, minute, second] = parts.map(toInt);
 
