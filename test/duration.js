@@ -14,6 +14,24 @@ describe('createDuration', () => {
       assert(typeof createDuration('PT0S'), 'object');
       assert(typeof createDuration('P1DT2H'), 'object');
     });
+
+    // it('should detect invalid input', () => {
+    //   assert.throws(() => {
+    //     createDuration('abc');
+    //   });
+
+    //   assert.throws(() => {
+    //     createDuration('P');
+    //   });
+
+    //   assert.throws(() => {
+    //     createDuration('P0');
+    //   });
+
+    //   assert.throws(() => {
+    //     createDuration('P00');
+    //   });
+    // });
   });
 
   describe('#toString', () => {
@@ -44,22 +62,22 @@ describe('createDuration', () => {
     it('should not affect underlying units', () => {
       assert.deepEqual(
         createDuration('P1D')
-          .addTo(new Date(2016, 9, 30, 0, 0, 0)),
-        new Date(2016, 9, 31, 0, 0, 0)
+          .addTo(new Date(Date.UTC(2016, 8, 1, 0, 0, 0))),
+        new Date(Date.UTC(2016, 8, 2, 0, 0, 0))
       );
     });
 
-    it('should', () => {
+    it('should work across timezones', () => {
       assert.deepEqual(
-        createDuration('PT1H')
-          .addTo(new Date('Sun Oct 30 2016 03:00:00 GMT+0200 (CEST)')),
-        new Date('Sun Oct 30 2016 03:00:00 GMT+0100 (CET)')
+        createDuration('PT744H') // ~ 31 days
+          .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
+        new Date('Mon Nov 15 2016 11:00:00 GMT+0100 (CET)').toString()
       );
 
       assert.deepEqual(
-        createDuration('PT24H')
-          .addTo(new Date('Sun Oct 30 2016 01:00:00 GMT+0200 (CEST)')),
-        new Date('Mon Oct 31 2016 00:00:00 GMT+0100 (CET)')
+        createDuration('P31D')
+          .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
+        new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)').toString()
       );
     });
 
@@ -94,22 +112,22 @@ describe('createDuration', () => {
     it('should not affect underlying units', () => {
       assert.deepEqual(
         createDuration('P1D')
-          .subtractFrom(new Date(2016, 9, 31, 0, 0, 0)),
-        new Date(2016, 9, 30, 0, 0, 0)
+          .subtractFrom(new Date(Date.UTC(2016, 8, 2, 0, 0, 0))),
+        new Date(Date.UTC(2016, 8, 1, 0, 0, 0))
       );
     });
 
-    it('should', () => {
+    it('should work across timezones', () => {
       assert.deepEqual(
-        createDuration('PT1H')
-          .subtractFrom(new Date('Sun Oct 30 2016 03:00:00 GMT+0100 (CET)')),
-        new Date('Sun Oct 30 2016 03:00:00 GMT+0200 (CEST)')
+        createDuration('PT744H') // ~ 31 days
+          .subtractFrom(new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)')).toString(),
+        new Date('Sun Oct 15 2016 13:00:00 GMT+0200 (CEST)').toString()
       );
 
       assert.deepEqual(
-        createDuration('PT24H')
-          .subtractFrom(new Date('Mon Oct 31 2016 00:00:00 GMT+0100 (CET)')),
-        new Date('Sun Oct 30 2016 01:00:00 GMT+0200 (CEST)')
+        createDuration('P31D')
+          .subtractFrom(new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)')).toString(),
+        new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)').toString()
       );
     });
 
