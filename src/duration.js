@@ -48,9 +48,9 @@ export default function createDuration (iso) {
 
   return Object.freeze({
     toString: () =>
-      `P${(year ? `${year}Y` : '')}${(month ? `${month}M` : '')}${(week ? `${week / 7}W` : '')}${(day ? `${day}D` : '')}${
-        (hour || minute || second
-          ? `T${(hour ? `${hour}H` : '')}${(minute ? `${minute}M` : '')}${(second ? `${second}S` : '')}`
+      `P${(year !== undefined ? `${year}Y` : '')}${(month !== undefined ? `${month}M` : '')}${(week !== undefined ? `${week / 7}W` : '')}${(day !== undefined ? `${day}D` : '')}${
+        (hour !== undefined || minute !== undefined || second !== undefined
+          ? `T${(hour !== undefined ? `${hour}H` : '')}${(minute !== undefined ? `${minute}M` : '')}${(second !== undefined ? `${second}S` : '')}`
           : ''
         )}`,
     addTo: date => {

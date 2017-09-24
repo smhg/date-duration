@@ -27,6 +27,7 @@ describe('createDuration', () => {
     it('should return the passed ISO string', () => {
       assert.equal(createDuration('P1DT1M').toString(), 'P1DT1M');
       assert.equal(createDuration('P1W').toString(), 'P1W');
+      assert.equal(createDuration('P0DT0M').toString(), 'P0DT0M');
     });
   });
 
