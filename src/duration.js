@@ -20,7 +20,14 @@ const dateMethods = new Map([
 ]);
 
 export default function createDuration (iso) {
-  let [, ...parts] = iso.match(parser);
+  iso = iso || '';
+
+  if (iso && iso.length > 0 && iso[0] !== 'P') {
+    throw new Error(`Invalid duration: ${iso}`);
+  }
+
+  let [, ...parts] = iso.match(parser) || [0, 0, 0, 0, 0, 0, 0, 0];
+
   let [year, month, week, day, hour, minute, second] = parts.map(toInt);
 
   if (week) {

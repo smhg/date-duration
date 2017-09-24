@@ -6,9 +6,13 @@ import assert from 'assert';
 describe('createDuration', () => {
   describe('#()', () => {
     it('should accept an ISO string', () => {
-      assert.doesNotThrow(() => {
-        createDuration('P1Y2M3D');
-      });
+      assert(typeof createDuration(), 'object');
+      assert(typeof createDuration(''), 'object');
+      assert(typeof createDuration(undefined), 'object');
+      assert(typeof createDuration(null), 'object');
+      assert(typeof createDuration('P0D'), 'object');
+      assert(typeof createDuration('PT0S'), 'object');
+      assert(typeof createDuration('P1DT2H'), 'object');
     });
   });
 
