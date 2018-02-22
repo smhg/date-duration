@@ -46,16 +46,12 @@ export default function createDuration (iso) {
 
   let [year, month, week, day, hour, minute, second] = parts.map(toInt);
 
-  if (week) {
-    week = week * 7;
-  }
-
   parts = {year, month, week, day, hour, minute, second};
 
   return Object.freeze({
     toString: () =>
       `P${
-        stripEmptyElements`${year}Y${month}M${week / 7}W${day}D`
+        stripEmptyElements`${year}Y${month}M${week}W${day}D`
       }T${
         stripEmptyElements`${hour}H${minute}M${second}S`
       }`.replace(/T$/, ''),
@@ -64,7 +60,7 @@ export default function createDuration (iso) {
 
       for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d[`set${method}`](d[`get${method}`]() + parts[key]);
+          d[`set${method}`](d[`get${method}`]() + (key !== 'week' ? parts[key] : parts[key] * 7));
         }
       }
 
@@ -75,7 +71,7 @@ export default function createDuration (iso) {
 
       for (let [key, method] of dateMethods) {
         if (parts[key]) {
-          d[`set${method}`](d[`get${method}`]() - parts[key]);
+          d[`set${method}`](d[`get${method}`]() - (key !== 'week' ? parts[key] : parts[key] * 7));
         }
       }
 
