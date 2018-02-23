@@ -1,4 +1,11 @@
 {
-  "presets": ["es2015"],
+  "presets": [
+    ["env", {
+      "targets": {
+        "browsers": ["last 2 versions", "IE >= 8"],
+        "node": "0.10"
+      }
+    }]
+  ],
   "plugins": ["transform-runtime"]
 }
