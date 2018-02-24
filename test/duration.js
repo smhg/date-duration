@@ -1,5 +1,6 @@
 'use strict';
 
+import 'babel-polyfill';
 import createDuration from '../src/duration';
 import assert from 'assert';
 
