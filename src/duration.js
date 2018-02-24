@@ -48,6 +48,17 @@ const joinParts = (parts, range) =>
     .map(key => `${parts[key]}${key}`)
     .join('');
 
+const mergeParts = (left, right, operator) =>
+  [...new Set(Object.keys(left).concat(Object.keys(right)))].reduce((result, key) => {
+    if (key === 'T') {
+      result[key] = mergeParts(left[key], right[key], operator);
+    } else {
+      result[key] = Math.abs(operator(left[key] || 0, right[key] || 0));
+    }
+
+    return result;
+  }, {});
+
 export default function createDuration (iso) {
   if (!iso) {
     throw new Error(`Invalid duration: no input`);
@@ -82,7 +93,8 @@ export default function createDuration (iso) {
       toString: () =>
         `P${joinParts(parts, ['Y', 'M', 'W', 'D'])}${parts.T ? `T${joinParts(parts.T, ['H', 'M', 'S'])}` : ''}`,
       addTo: date => applyParts(clone(date), parts, methods, (left, right) => left + right),
-      subtractFrom: date => applyParts(clone(date), parts, methods, (left, right) => left - right)
+      subtractFrom: date => applyParts(clone(date), parts, methods, (left, right) => left - right),
+      add: duration => createDuration({P: mergeParts(parts, duration.P, (left, right) => left + right)})
     }
   ));
 }

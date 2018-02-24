@@ -148,4 +148,13 @@ describe('createDuration', () => {
       assert.equal(createDuration('PT1H').subtractFrom(date).toISOString(), '2015-10-25T02:00:00.000Z');
     });
   });
+
+  describe('#add', () => {
+    it('should add durations together', () => {
+      assert.equal(createDuration('P1D').add(createDuration('P1D')).P.D, 2);
+      assert.equal(createDuration('PT1M').add(createDuration('PT1M')).P.T.M, 2);
+      assert.equal(createDuration('P1D').add(createDuration('P0D')).P.D, 1);
+      assert.deepEqual(createDuration('P1DT1M').add(createDuration('P2DT1M')).P, {D: 3, T: {M: 2}});
+    });
+  });
 });
