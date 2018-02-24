@@ -1,14 +1,5 @@
 'use strict';
 
-const toInt = value => {
-  const int = parseInt(value, 10);
-
-  if (int + '' === value) {
-    return int;
-  }
-
-  return value;
-};
 const clone = value => {
   if (typeof value === 'object' && typeof value.toDate === 'function') {
     return value.toDate();
@@ -16,66 +7,82 @@ const clone = value => {
 
   return new Date(+value);
 };
-const stripEmptyElements = ([, ...elements], ...values) =>
-  elements.reduce(
-    (result, element, index) =>
-      `${result}${Number.isInteger(values[index]) ? `${values[index]}${element}` : ''}`,
-    ''
-  );
-const parser = /P(?:(\d+)Y)?(?:(\d+)M)?(?:(\d+)W)?(?:(\d+)D)?(?:T(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?)?/;
-const dateMethods = new Map([
-  ['year', 'FullYear'],
-  ['month', 'Month'],
-  ['week', 'Date'],
-  ['day', 'Date'],
-  ['hour', 'UTCHours'],
-  ['minute', 'UTCMinutes'],
-  ['second', 'UTCSeconds']
-]);
 
-export default function createDuration (iso) {
-  if (!iso || typeof iso !== 'string' || iso[0] !== 'P') {
-    throw new Error(`Invalid duration: ${iso} (invalid format)`);
+const dateParser = /P(\d+Y)?(\d+M)?(\d+W)?(\d+D)?/;
+
+const timeParser = /T(\d+H)?(\d+M)?(\d+S)?/;
+
+const methods = {
+  Y: 'FullYear',
+  M: 'Month',
+  W: 'Date',
+  D: 'Date',
+  T: {
+    H: 'UTCHours',
+    M: 'UTCMinutes',
+    S: 'UTCSeconds'
   }
+};
 
-  let [, ...parts] = iso.match(parser);
+const parseIso = (parser, iso) =>
+  (iso.match(parser) || [undefined])
+    .slice(1)
+    .filter(part => typeof part !== 'undefined')
+    .map(part => ({[part[part.length - 1]]: parseInt(part.slice(0, -1), 10)}));
 
-  if (parts.every(part => typeof part === 'undefined')) {
-    throw new Error(`Invalid duration: ${iso} (no date or time elements specified)`);
-  }
-
-  let [year, month, week, day, hour, minute, second] = parts.map(toInt);
-
-  parts = {year, month, week, day, hour, minute, second};
-
-  return Object.freeze({
-    toString: () =>
-      `P${
-        stripEmptyElements`${year}Y${month}M${week}W${day}D`
-      }T${
-        stripEmptyElements`${hour}H${minute}M${second}S`
-      }`.replace(/T$/, ''),
-    addTo: date => {
-      let d = clone(date);
-
-      for (let [key, method] of dateMethods) {
-        if (parts[key]) {
-          d[`set${method}`](d[`get${method}`]() + (key !== 'week' ? parts[key] : parts[key] * 7));
-        }
-      }
-
-      return d;
-    },
-    subtractFrom: date => {
-      let d = clone(date);
-
-      for (let [key, method] of dateMethods) {
-        if (parts[key]) {
-          d[`set${method}`](d[`get${method}`]() - (key !== 'week' ? parts[key] : parts[key] * 7));
-        }
-      }
-
-      return d;
+const applyParts = (date, parts, methods, operator) => {
+  Object.keys(parts).forEach(key => {
+    if (key === 'T') {
+      date = applyParts(date, parts.T, methods.T, operator);
+    } else {
+      date[`set${methods[key]}`](operator(date[`get${methods[key]}`](), (key !== 'W' ? parts[key] : parts[key] * 7)));
     }
   });
+
+  return date;
+};
+
+const joinParts = (parts, range) =>
+  Object.keys(parts || {})
+    .filter(key => range.indexOf(key) >= 0)
+    .map(key => `${parts[key]}${key}`)
+    .join('');
+
+export default function createDuration (iso) {
+  if (!iso) {
+    throw new Error(`Invalid duration: no input`);
+  }
+
+  let parts = {};
+
+  if (typeof iso === 'string') {
+    parts = Object.assign(
+      {},
+      ...parseIso(dateParser, iso)
+    );
+
+    const timeParts = parseIso(timeParser, iso);
+
+    if (timeParts.length > 0) {
+      Object.assign(parts, {T: Object.assign({}, ...timeParts)});
+    }
+
+    if (Object.keys(parts) <= 0) {
+      throw new Error(`Invalid duration: invalid ISO format (${iso})`);
+    }
+  } else if ('P' in iso) {
+    parts = Object.assign({}, iso.P);
+  } else {
+    throw new Error(`Invalid duration: invalid input (${iso})`);
+  }
+
+  return Object.freeze(Object.assign(
+    {P: parts},
+    {
+      toString: () =>
+        `P${joinParts(parts, ['Y', 'M', 'W', 'D'])}${parts.T ? `T${joinParts(parts.T, ['H', 'M', 'S'])}` : ''}`,
+      addTo: date => applyParts(clone(date), parts, methods, (left, right) => left + right),
+      subtractFrom: date => applyParts(clone(date), parts, methods, (left, right) => left - right)
+    }
+  ));
 }

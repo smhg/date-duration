@@ -6,9 +6,15 @@ import assert from 'assert';
 describe('createDuration', () => {
   describe('#()', () => {
     it('should accept an ISO string', () => {
-      assert(typeof createDuration('P0D'), 'object');
-      assert(typeof createDuration('PT0S'), 'object');
-      assert(typeof createDuration('P1DT2H'), 'object');
+      assert.equal(createDuration('P0D').P.D, 0);
+      assert.equal(createDuration('PT0S').P.T.S, 0);
+      assert.equal(createDuration('P1DT2H').P.D, 1);
+      assert.equal(createDuration('P1DT2H').P.T.H, 2);
+    });
+
+    it('should accept an object', () => {
+      assert.equal(createDuration({P: {D: 1, T: {H: 2}}}).P.D, 1);
+      assert.equal(createDuration({P: {D: 1, T: {H: 2}}}).P.T.H, 2);
     });
 
     it('should detect invalid input', () => {
@@ -24,10 +30,12 @@ describe('createDuration', () => {
   });
 
   describe('#toString', () => {
-    it('should return the passed ISO string', () => {
+    it('should return an ISO string', () => {
       assert.equal(createDuration('P1DT1M').toString(), 'P1DT1M');
+      assert.equal(createDuration('PT2H1M').toString(), 'PT2H1M');
       assert.equal(createDuration('P1W').toString(), 'P1W');
       assert.equal(createDuration('P0DT0M').toString(), 'P0DT0M');
+      assert.equal(createDuration({P: {D: 5, T: {H: 1}}}).toString(), 'P5DT1H');
     });
   });
 
