@@ -12,6 +12,8 @@ $ npm install date-duration
 import Duration from 'date-duration';
 
 let duration = Duration('PT1H');
+// or
+let duration = Duration({P: {T: {H: 1}}});
 ```
 
 ## API
@@ -23,6 +25,9 @@ Add the duration to a Date object and returns the new date. Objects with a `.toD
 
 ### duration.subtractFrom(Date)
 Subtract the duration from a Date object and returns the new date. Objects with a `.toDate()` method are converted to a regular Date object.
+
+### duration.add(Duration)
+Add durations together returning a new duration which is the sum of both.
 
 ### duration.toString()
 Convert a duration back to a string in ISO 8601 format.
