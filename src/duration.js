@@ -27,7 +27,7 @@ const methods = {
 const parseIso = (parser, iso) =>
   (iso.match(parser) || [undefined])
     .slice(1)
-    .filter(part => typeof part !== 'undefined')
+    .filter(part => /^[0-9]+[A-Z]$/i.test(part))
     .map(part => ({[part[part.length - 1]]: parseInt(part.slice(0, -1), 10)}));
 
 const applyParts = (date, parts, methods, operator) => {
