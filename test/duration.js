@@ -65,18 +65,18 @@ describe('createDuration', () => {
       );
     });
 
-    it('should work across timezones', () => {
-      // jumps across timezones are handled differently for date and time elements
+    it('should work across DST', () => {
+      // jumps across DST are handled differently for date and time elements
       // see https://en.wikipedia.org/wiki/ISO_8601#Durations
 
-      // jump across timezone with time element
+      // jump across DST with time element
       assert.deepEqual(
         createDuration('PT744H') // ~ 31 days
           .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
         new Date('Mon Nov 15 2016 11:00:00 GMT+0100 (CET)').toString()
       );
 
-      // jump across timezone with date element
+      // jump across DST with date element
       assert.deepEqual(
         createDuration('P31D')
           .addTo(new Date('Sun Oct 15 2016 12:00:00 GMT+0200 (CEST)')).toString(),
@@ -120,11 +120,11 @@ describe('createDuration', () => {
       );
     });
 
-    it('should work across timezones', () => {
-      // jumps across timezones are handled differently for date and time elements
+    it('should work across DST', () => {
+      // jumps across DST are handled differently for date and time elements
       // see https://en.wikipedia.org/wiki/ISO_8601#Durations
 
-      // jump across timezone with time element
+      // jump across DST with time element
       assert.deepEqual(
         createDuration('PT744H') // ~ 31 days
           .subtractFrom(new Date('Mon Nov 15 2016 12:00:00 GMT+0100 (CET)')).toString(),
