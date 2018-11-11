@@ -28,7 +28,7 @@ const parseIso = (parser, iso) =>
   (iso.match(parser) || [undefined])
     .slice(1)
     .filter(part => /^[0-9]+[A-Z]$/i.test(part))
-    .map(part => ({[part[part.length - 1]]: parseInt(part.slice(0, -1), 10)}));
+    .map(part => ({ [part[part.length - 1]]: parseInt(part.slice(0, -1), 10) }));
 
 const applyParts = (date, parts, methods, operator) => {
   Object.keys(parts).forEach(key => {
@@ -75,7 +75,7 @@ export default function createDuration (iso) {
     const timeParts = parseIso(timeParser, iso);
 
     if (timeParts.length > 0) {
-      Object.assign(parts, {T: Object.assign({}, ...timeParts)});
+      Object.assign(parts, { T: Object.assign({}, ...timeParts) });
     }
 
     if (Object.keys(parts) <= 0) {
@@ -88,13 +88,13 @@ export default function createDuration (iso) {
   }
 
   return Object.freeze(Object.assign(
-    {P: parts},
+    { P: parts },
     {
       toString: () =>
         `P${joinParts(parts, ['Y', 'M', 'W', 'D'])}${parts.T ? `T${joinParts(parts.T, ['H', 'M', 'S'])}` : ''}`,
       addTo: date => applyParts(clone(date), parts, methods, (left, right) => left + right),
       subtractFrom: date => applyParts(clone(date), parts, methods, (left, right) => left - right),
-      add: duration => createDuration({P: mergeParts(parts, duration.P, (left, right) => left + right)})
+      add: duration => createDuration({ P: mergeParts(parts, duration.P, (left, right) => left + right) })
     }
   ));
 }
