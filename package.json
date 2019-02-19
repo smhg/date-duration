@@ -1,6 +1,6 @@
 {
   "name": "date-duration",
-  "version": "1.4.1",
+  "version": "1.5.0",
   "description": "Manipulate Date objects with ISO 8601-formatted durations",
   "main": "dist/duration.js",
   "module": "src/duration.js",
