@@ -6,8 +6,8 @@
   "scripts": {
     "lint": "eslint src test",
     "build": "babel --source-maps -d dist src",
-    "test-timezone1": "export TZ=Europe/Brussels && mocha --compilers js:babel-register test",
-    "test-timezone2": "export TZ=America/New_York && mocha --compilers js:babel-register test",
+    "test-timezone1": "export TZ=Europe/Brussels && mocha --require babel-core/register test",
+    "test-timezone2": "export TZ=America/New_York && mocha --require babel-core/register test",
     "test": "npm run test-timezone1 && npm run test-timezone2",
     "clean": "rm -rf dist",
     "preversion": "npm run lint && npm run test",
@@ -40,13 +40,13 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-register": "^6.26.0",
-    "eslint": "^5.9.0",
+    "eslint": "^5.14.1",
     "eslint-config-standard": "^12.0.0",
-    "eslint-plugin-import": "^2.14.0",
-    "eslint-plugin-node": "^8.0.0",
+    "eslint-plugin-import": "^2.16.0",
+    "eslint-plugin-node": "^8.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "mocha": "^5.2.0"
+    "mocha": "^6.0.0"
   },
   "dependencies": {
     "babel-runtime": "^6.26.0"
