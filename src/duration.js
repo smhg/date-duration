@@ -1,5 +1,3 @@
-'use strict';
-
 const clone = value => {
   if (typeof value === 'object' && typeof value.toDate === 'function') {
     return value.toDate();
@@ -59,6 +57,11 @@ const mergeParts = (left, right, operator) =>
     return result;
   }, {});
 
+/**
+ * @constructor
+ * @param  {string|object} iso Duration as a string (ISO 8601 notation) or object
+ * @return {object} Duration
+ */
 export default function createDuration (iso) {
   if (!iso) {
     throw new Error(`Invalid duration: no input`);

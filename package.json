@@ -3,11 +3,12 @@
   "version": "1.4.1",
   "description": "Manipulate Date objects with ISO 8601-formatted durations",
   "main": "dist/duration.js",
+  "module": "src/duration.js",
   "scripts": {
     "lint": "eslint src test",
     "build": "babel --source-maps -d dist src",
-    "test-timezone1": "export TZ=Europe/Brussels && mocha --require babel-core/register test",
-    "test-timezone2": "export TZ=America/New_York && mocha --require babel-core/register test",
+    "test-timezone1": "export TZ=Europe/Brussels && mocha --require @babel/register",
+    "test-timezone2": "export TZ=America/New_York && mocha --require @babel/register",
     "test": "npm run test-timezone1 && npm run test-timezone2",
     "clean": "rm -rf dist",
     "preversion": "npm run lint && npm run test",
@@ -35,11 +36,11 @@
   },
   "homepage": "https://github.com/smhg/date-duration#readme",
   "devDependencies": {
-    "babel-cli": "^6.26.0",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-polyfill": "^6.26.0",
-    "babel-preset-env": "^1.7.0",
-    "babel-register": "^6.26.0",
+    "@babel/cli": "^7.2.3",
+    "@babel/core": "^7.3.3",
+    "@babel/plugin-transform-runtime": "^7.2.0",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/register": "^7.0.0",
     "eslint": "^5.14.1",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.16.0",
@@ -49,6 +50,12 @@
     "mocha": "^6.0.0"
   },
   "dependencies": {
-    "babel-runtime": "^6.26.0"
-  }
+    "@babel/runtime": "^7.3.1"
+  },
+  "browserslist": [
+    "last 1 version",
+    "> 1%",
+    "maintained node versions",
+    "not dead"
+  ]
 }
