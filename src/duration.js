@@ -1,3 +1,7 @@
+import createDebug from 'debug';
+
+const debug = createDebug('date-duration');
+
 const clone = value => {
   if (typeof value === 'object' && typeof value.toDate === 'function') {
     return value.toDate();
@@ -33,7 +37,16 @@ const applyParts = (date, parts, methods, operator) => {
     if (key === 'T') {
       date = applyParts(date, parts.T, methods.T, operator);
     } else {
-      date[`set${methods[key]}`](operator(date[`get${methods[key]}`](), (key !== 'W' ? parts[key] : parts[key] * 7)));
+      const original = date[`get${methods[key]}`]();
+
+      const value = operator(
+        original,
+        key !== 'W' ? parts[key] : parts[key] * 7
+      );
+
+      date[`set${methods[key]}`](value);
+
+      debug(`set ${key} ${original} to ${value}: ${date}`);
     }
   });
 
@@ -95,9 +108,14 @@ export default function createDuration (iso) {
     {
       toString: () =>
         `P${joinParts(parts, ['Y', 'M', 'W', 'D'])}${parts.T ? `T${joinParts(parts.T, ['H', 'M', 'S'])}` : ''}`,
-      addTo: date => applyParts(clone(date), parts, methods, (left, right) => left + right),
-      subtractFrom: date => applyParts(clone(date), parts, methods, (left, right) => left - right),
-      add: duration => createDuration({ P: mergeParts(parts, duration.P, (left, right) => left + right) })
+      addTo: date =>
+        applyParts(clone(date), parts, methods, (left, right) => left + right),
+      subtractFrom: date =>
+        applyParts(clone(date), parts, methods, (left, right) => left - right),
+      add: duration =>
+        createDuration({
+          P: mergeParts(parts, duration.P, (left, right) => left + right)
+        })
     }
   ));
 }
