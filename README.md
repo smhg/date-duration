@@ -29,5 +29,8 @@ Subtract the duration from a Date object and returns the new date. Objects with 
 ### duration.add(Duration)
 Add durations together returning a new duration which is the sum of both.
 
+### duration.multiply(number)
+Multiply individual parts of duration returning a new duration as the result.
+
 ### duration.toString()
 Convert a duration back to a string in ISO 8601 format.

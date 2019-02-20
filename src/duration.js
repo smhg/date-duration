@@ -117,16 +117,40 @@ export default function createDuration (iso) {
   return Object.freeze(Object.assign(
     { P: parts },
     {
+      /**
+       * Convert to a string in ISO 8601 notation
+       * @return {string}
+       */
       toString: () =>
         `P${joinParts(parts, ['Y', 'M', 'W', 'D'])}${parts.T ? `T${joinParts(parts.T, ['H', 'M', 'S'])}` : ''}`,
+      /**
+       * Add duration to a date
+       * @param  {Date} date
+       * @return {Date}
+       */
       addTo: date =>
         applyParts(clone(date), parts, methods, (left, right) => left + right),
+      /**
+       * Subtract duration from a date
+       * @param  {Date} date
+       * @return {Date}
+       */
       subtractFrom: date =>
         applyParts(clone(date), parts, methods, (left, right) => left - right),
+      /**
+       * Add (merge) two durations
+       * @param  {Duration} duration
+       * @return {Duration}
+       */
       add: duration =>
         createDuration({
           P: mergeParts(parts, duration.P, (left, right) => left + right)
         }),
+      /**
+       * Multiply parts of the duration by a number
+       * @param  {number} multiplier
+       * @return {Duration}
+       */
       multiply: multiplier =>
         createDuration({
           P: updateParts(parts, value => value * multiplier)
