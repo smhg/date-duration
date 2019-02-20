@@ -70,6 +70,17 @@ const mergeParts = (left, right, operator) =>
     return result;
   }, {});
 
+const updateParts = (parts, operator) =>
+  Object.keys(parts).reduce((result, key) => {
+    if (key === 'T') {
+      result[key] = updateParts(parts[key], operator);
+    } else {
+      result[key] = operator(parts[key]);
+    }
+
+    return result;
+  }, {});
+
 /**
  * @constructor
  * @param  {string|object} iso Duration as a string (ISO 8601 notation) or object
@@ -115,6 +126,10 @@ export default function createDuration (iso) {
       add: duration =>
         createDuration({
           P: mergeParts(parts, duration.P, (left, right) => left + right)
+        }),
+      multiply: multiplier =>
+        createDuration({
+          P: updateParts(parts, value => value * multiplier)
         })
     }
   ));

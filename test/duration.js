@@ -155,4 +155,12 @@ describe('createDuration', () => {
       assert.deepStrictEqual(createDuration('P1DT1M').add(createDuration('P2DT1M')).P, { D: 3, T: { M: 2 } });
     });
   });
+
+  describe('#multiply', () => {
+    it('should update duration', () => {
+      assert.strictEqual(createDuration('P1D').multiply(2).P.D, 2);
+      assert.strictEqual(createDuration('PT15M').multiply(3).P.T.M, 45);
+      assert.deepStrictEqual(createDuration('P2DT5M').multiply(2).P, { D: 4, T: { M: 10 } });
+    });
+  });
 });
