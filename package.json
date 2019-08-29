@@ -50,7 +50,6 @@
     "mocha": "^6.2.0"
   },
   "dependencies": {
-    "@babel/polyfill": "^7.4.4",
     "@babel/runtime": "^7.5.5",
     "debug": ">=3.2.6 || >= 4.1.1"
   },
