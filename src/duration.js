@@ -88,7 +88,7 @@ const updateParts = (parts, operator) =>
  */
 export default function createDuration (iso) {
   if (!iso) {
-    throw new Error(`Invalid duration: no input`);
+    throw new Error('Invalid duration: no input');
   }
 
   let parts = {};
