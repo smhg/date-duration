@@ -1,4 +1,4 @@
-date-duration [![Build status](https://api.travis-ci.org/smhg/date-duration.png)](https://travis-ci.org/smhg/date-duration)
+date-duration [![ci](https://github.com/smhg/date-duration/actions/workflows/node.js.yml/badge.svg)](https://github.com/smhg/date-duration/actions/workflows/node.js.yml)
 ======
 Manipulate Date objects with [ISO 8601](https://en.wikipedia.org/wiki/ISO_8601#Durations)-formatted durations.
 
