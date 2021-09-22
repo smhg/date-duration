@@ -1,7 +1,7 @@
-node_modules
-*.sublime-*
-npm-debug.log
-.eslintrc
-test
+/.github
+/node_modules
+/test
+.eslintrc.json
 .gitignore
-src
+.npmrc
+npm-debug.log
