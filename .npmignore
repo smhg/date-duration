@@ -4,5 +4,4 @@ npm-debug.log
 .eslintrc
 test
 .gitignore
-.travis.yml
 src
