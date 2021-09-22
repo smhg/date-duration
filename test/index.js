@@ -1,4 +1,4 @@
-import createDuration from '../src/duration';
+import createDuration from '../index.js';
 import assert from 'assert';
 
 describe('createDuration', () => {

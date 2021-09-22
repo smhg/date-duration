@@ -2,19 +2,16 @@
   "name": "date-duration",
   "version": "1.8.1",
   "description": "Manipulate Date objects with ISO 8601-formatted durations",
-  "main": "dist/duration.js",
-  "module": "src/duration.js",
+  "type": "module",
+  "exports": "./index.js",
   "scripts": {
-    "lint": "eslint src test",
-    "build": "babel --source-maps -d dist src",
-    "test-timezone1": "export TZ=Europe/Brussels && mocha --require @babel/register",
-    "test-timezone2": "export TZ=America/New_York && mocha --require @babel/register",
+    "lint": "eslint index.js test",
+    "test-timezone1": "export TZ=Europe/Brussels && mocha",
+    "test-timezone2": "export TZ=America/New_York && mocha",
     "test": "npm run test-timezone1 && npm run test-timezone2",
-    "clean": "rm -rf dist",
     "preversion": "npm run lint && npm run test",
     "postversion": "git push && git push --tags",
-    "prepublishOnly": "npm run lint && npm run test && npm run build",
-    "postpublish": "npm run clean"
+    "prepublishOnly": "npm run lint && npm run test"
   },
   "repository": {
     "type": "git",
@@ -36,23 +33,18 @@
   },
   "homepage": "https://github.com/smhg/date-duration#readme",
   "devDependencies": {
-    "@babel/cli": "^7.8.4",
-    "@babel/core": "^7.8.6",
-    "@babel/plugin-transform-runtime": "^7.8.3",
-    "@babel/preset-env": "^7.8.6",
-    "@babel/register": "^7.8.6",
     "eslint": "^7.32.0",
     "eslint-config-standard": "^16.0.3",
-    "eslint-plugin-import": "^2.20.1",
-    "eslint-plugin-node": "^11.0.0",
+    "eslint-plugin-import": "^2.24.2",
+    "eslint-plugin-node": "^11.1.0",
     "eslint-plugin-promise": "^5.1.0",
     "eslint-plugin-standard": "^5.0.0",
     "mocha": "^9.1.1"
   },
   "dependencies": {
-    "@babel/runtime": "^7.8.4",
-    "debug": ">=3.2.6 || >= 4.1.1"
+    "debug": "^4.3.2"
   },
+  "node": "^12.20.0 || ^14.13.1 || >=16.0.0",
   "browserslist": [
     "last 1 version",
     "> 1%",
